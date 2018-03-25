@@ -106,9 +106,7 @@ public class AgencyMonthlyPlanningTesting {
 	}
 	//test
 	private static ArrayList<Row> filter(ArrayList<Row> rows, String teamName, int filteredColIndex) throws IOException {
-		Row headerRow = rows.get(0);
 		ArrayList<Row> filteredRows = new ArrayList<Row>();
-		filteredRows.add(headerRow);
 		// filter data by team name in the column 2 nd
 		filteredRows.addAll(xlsxRW.filter(rows, teamName, filteredColIndex)); 
 		return filteredRows;
@@ -173,14 +171,30 @@ public class AgencyMonthlyPlanningTesting {
 						ArrayList<Row> rows = (ArrayList<Row>)dataDic.get(k);
 						if (k.equals(SHEET_INDIVIDUALS_DETAIL_PLAN)) {
 							ArrayList<Row> filteredRows = filter(rows, teamName, TEAM_COLUMN_INDEX);
+							if (book.getSheet(sheets[0]).getLastRowNum()==0) {
+								// add header
+								filteredRows.add(0, rows.get(0));
+							}
 							rowidxIndiSheet = write(book, sheets[0], rowidxIndiSheet, filteredRows);
 						} else if (k.equals(SHEET_LEADERS_DETAIL_PLAN)) {
 							ArrayList<Row> filteredRows = filter(rows, teamName, TEAM_COLUMN_INDEX);
+							if (book.getSheet(sheets[1]).getLastRowNum()==0) {
+								// add header
+								filteredRows.add(0, rows.get(0));
+							}
 							rowidxUnitSheet = write(book, sheets[1], rowidxUnitSheet, filteredRows);
 						} else if (k.equals(SHEET_ACTIVITY_PLAN)) {
 							ArrayList<Row> filteredRows = filter(rows, "Sessions", ACTIVITY_COLUMN_INDEX);
+							if (book.getSheet(sheets[2]).getLastRowNum()==0) {
+								// add header
+								filteredRows.add(0, rows.get(0));
+							}
 							rowidxSessSheet = write(book, sheets[2], rowidxSessSheet, filteredRows);
 							filteredRows = filter(rows, "Attendees", ACTIVITY_COLUMN_INDEX);
+							if (book.getSheet(sheets[3]).getLastRowNum()==0) {
+								// add header
+								filteredRows.add(0, rows.get(0));
+							}
 							rowidxAtteSheet = write(book, sheets[3], rowidxAtteSheet, filteredRows);
 						}
 					}
